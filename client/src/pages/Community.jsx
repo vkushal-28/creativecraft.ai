@@ -1,24 +1,70 @@
 import React, { useState } from "react";
 import { useUser } from "@clerk/clerk-react";
-import { dummyPublishedCreationData } from "../assets/assets";
 import { useEffect } from "react";
 import { Heart } from "lucide-react";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { useAuth } from "@clerk/clerk-react";
+
+axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
 const Community = () => {
   const [creations, setCreations] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const { user } = useUser();
+  const { getToken } = useAuth();
 
   const fetchCreations = async () => {
-    setCreations(dummyPublishedCreationData);
+    try {
+      const { data } = await axios.get("api/user/get-published-creations", {
+        headers: {
+          Authorization: `Bearer ${await getToken()}`,
+        },
+      });
+
+      if (data.success) {
+        setCreations(data.creations);
+      } else {
+        setCreations([]);
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+    setLoading(false);
   };
 
+  const imageLikeToggle = async (id) => {
+    try {
+      const { data } = await axios.post(
+        "api/user/toggle-like-creation",
+        { id },
+        {
+          headers: {
+            Authorization: `Bearer ${await getToken()}`,
+          },
+        }
+      );
+
+      if (data.success) {
+        toast.success(data.message);
+        await fetchCreations();
+      } else {
+        setCreations([]);
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
   useEffect(() => {
     if (user) {
       fetchCreations();
     }
   }, [user]);
 
-  return (
+  return !loading ? (
     <div className="flex-1 h-full flex flex-col gap-4 p-6">
       Creations
       <div className="bg-white h-full w-full rounded-xl overflow-y-scroll pr-3">
@@ -29,10 +75,10 @@ const Community = () => {
             <img
               src={creation.content}
               alt=""
-              className="w-full h-full object-cover rounded-lg"
+              className=" h-full object-cover rounded-lg"
             />
 
-            <div className="absolute bottom-0 top-0 ring-0 left-3 flex  items-end justify-end group-hover:justify-between p-3 group-hover:bg-gradient-to-b from-transparent to-black/80 text-white rounded-lg transition-all  delay-700">
+            <div className="absolute  bottom-0 top-0 ring-0 left-3 flex  items-end justify-end group-hover:justify-between p-3 group-hover:bg-gradient-to-b from-transparent to-black/80 text-white rounded-lg transition-all  delay-700">
               <p className="text-sm hidden group-hover:block">
                 {creation.prompt}
               </p>
@@ -44,12 +90,17 @@ const Community = () => {
                       ? "fill-red-500 text-red-600"
                       : "text-white"
                   }`}
+                  onClick={() => imageLikeToggle(creation.id)}
                 />
               </div>
             </div>
           </div>
         ))}
       </div>
+    </div>
+  ) : (
+    <div className="flex justify-center items-center h-full">
+      <span className="w-10 h-10 my-1 rounded-full border-3 border-primary border-t-transparent animate-spin"></span>
     </div>
   );
 };
