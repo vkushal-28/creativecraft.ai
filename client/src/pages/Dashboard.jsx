@@ -64,7 +64,7 @@ const Dashboard = () => {
               </Protect>
             </h2>
           </div>
-          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#FF61C5] to-[#9E53EE] text-white flex justify-center items-center">
+          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#f359ba] to-[#853ad6] text-white flex justify-center items-center">
             <Gem className="w-5 text-white" />
           </div>
         </div>
@@ -75,8 +75,8 @@ const Dashboard = () => {
           <div className="animate-spin rounded-full h-11 w-11 border-3 border-purple-500 border-t-transparent"></div>
         </div>
       ) : (
-        <div className="spacy-y-3">
-          <p className="mt-6 mb-4">Recent Creations</p>
+        <div className="spacy-y-3 ">
+          <p className="mt-6 mb-4 text-lg">Recent Creations</p>
           {creations.map((item) => (
             <CreationItem key={item.id} item={item} />
           ))}

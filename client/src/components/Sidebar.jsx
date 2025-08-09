@@ -40,7 +40,7 @@ const Sidebar = ({ sidebar, setSidebar }) => {
         />
         <h1 className="mt-1 text-center">{user?.fullName}</h1>
 
-        <div className="px-6 mt-5 text-sm text-gray-600 font-medium">
+        <div className="px-4 mt-5 text-sm text-gray-600 font-medium">
           {navItems.map(({ to, label, Icon }) => (
             <NavLink
               key={to}
@@ -48,9 +48,9 @@ const Sidebar = ({ sidebar, setSidebar }) => {
               end={to === "/ai"}
               onClick={() => setSidebar(false)}
               className={({ isActive }) =>
-                `px-3.5 py-2.5 flex items-center gap-3 rounded ${
+                `px-3.5 py-2.5 flex items-center gap-3 rounded hover:bg-gray-100  ${
                   isActive
-                    ? "bg-gradient-to-r from-[#3C81F6] to-[#9234EA] text-white"
+                    ? "bg-gradient-to-r from-pink-500 via-purple-600 to-indigo-500 text-white  transition-colors"
                     : ""
                 }`
               }>
@@ -64,7 +64,7 @@ const Sidebar = ({ sidebar, setSidebar }) => {
           ))}
         </div>
       </div>
-      <div className="w-full border-t border-gray-200 p-4 px-7 flex items-center justify-between">
+      <div className="w-full border-t border-gray-200 p-4 px-4 flex items-center justify-between">
         <div
           className="flex gap-2 items-center cursor-pointer"
           onClick={openUserProfile}>

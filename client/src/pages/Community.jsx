@@ -66,23 +66,23 @@ const Community = () => {
 
   return !loading ? (
     <div className="flex-1 h-full flex flex-col gap-4 p-6">
-      Creations
-      <div className="bg-white h-full w-full rounded-xl overflow-y-scroll pr-3">
+      <h1 className="text-lg"> Creations</h1>
+      <div className="bg-white h-full w-full rounded-xl overflow-y-scroll px-3 ">
         {creations.map((creation, index) => (
           <div
             key={index}
-            className="relative group inline-block pl-3 pt-3 w-full sm:max-w-1/2 lg:max-w-1/3">
+            className="relative group inline-block  pt-3 mr-3 w-full sm:max-w-1/2 lg:max-w-1/3">
             <img
               src={creation.content}
               alt=""
               className=" h-full object-cover rounded-lg"
             />
 
-            <div className="absolute  bottom-0 top-0 ring-0 left-3 flex  items-end justify-end group-hover:justify-between p-3 group-hover:bg-gradient-to-b from-transparent to-black/80 text-white rounded-lg transition-all  delay-700">
-              <p className="text-sm hidden group-hover:block">
+            <div className="absolute  bottom-0 top-0 right-0 ring-0 flex items-end justify-end group-hover:justify-between p-3 group-hover:bg-gradient-to-b from-transparent to-black/80 text-white rounded-lg transition-all  delay-700 ">
+              <p className="text-sm hidden group-hover:block mr-3 ">
                 {creation.prompt}
               </p>
-              <div className="flex gap-1 items-center">
+              <div className="flex gap-1 items-center ">
                 <p>{creation.likes.length}</p>
                 <Heart
                   className={`min-w-5 h-5 hover:scale-110 cursor-pointer ${

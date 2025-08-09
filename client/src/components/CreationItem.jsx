@@ -7,8 +7,8 @@ const CreationItem = ({ item }) => {
   return (
     <div
       onClick={() => setExpanded(!expanded)}
-      className="p-4 mb-4 max-w-5xl text-sm bg-white border border-gray-200 rounded-lg cursor-pointer">
-      <div className="flex justify-between items-center gap-4">
+      className="p-4 mb-4 max-w-5xl text-sm bg-white border border-gray-200 rounded-lg cursor-pointer shadow-lg">
+      <div className="flex justify-between items-center gap-4 ">
         <div>
           <h2>{item.prompt}</h2>
           <p className="text-gray-500 ">
@@ -30,7 +30,7 @@ const CreationItem = ({ item }) => {
               />
             </div>
           ) : (
-            <div className="mt-3 h-full overflow-y-scroll text-sm text-slate-700 transition delay-300">
+            <div className="mt-3 h-full overflow-y-scroll text-sm text-slate-700 ">
               <div className="reset-tw">
                 <Markdown>{item.content}</Markdown>
               </div>

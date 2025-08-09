@@ -191,3 +191,42 @@ export const dummyPublishedCreationData = [
     __v: 1,
   },
 ];
+
+export const noContentMessages = {
+  "generate-article": {
+    name: "Generated Article",
+    color: "indigo-600",
+    Icon: SquarePen,
+    message: `Enter a topic and click "Generate Article" to get started`,
+  },
+  "blog-title": {
+    name: "Generated Titles",
+    color: "purple-600",
+    Icon: Hash,
+    message: `Enter a topic and click "Generate Title" to get started`,
+  },
+  "generate-image": {
+    name: "Generated Image",
+    color: "teal-600",
+    Icon: Image,
+    message: `Enter a topic and click "Generate Image" to get started`,
+  },
+  "remove-background": {
+    name: "Processed Image",
+    color: "red-500",
+    Icon: Eraser,
+    message: `Upload an image and click "Remove Background" to get started`,
+  },
+  "remove-object": {
+    name: "Processed Image",
+    color: "indigo-500",
+    Icon: Scissors,
+    message: `Upload an image and click "Remove Object" to get started`,
+  },
+  "review-resume": {
+    name: "Analysis Results",
+    color: "cyan-600",
+    Icon: FileText,
+    message: `Upload a resume and click "Review Resume" to get started`,
+  },
+};
