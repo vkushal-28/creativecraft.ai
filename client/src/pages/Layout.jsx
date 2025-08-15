@@ -39,8 +39,8 @@ const Layout = () => {
       <div className=" flex-1 w-full flex h-[calc(100vh-64px)]">
         <Sidebar sidebar={sidebar} setSidebar={setSidebar} />
         <div class="relative flex-1 ">
-          <div class="absolute inset-0  bg-no-repeat bg-cover bg-center opacity-70 bg-[url(/gradientBackground.png)]"></div>
-          <div class="relative z-10 h-screen">
+          <div class="absolute inset-0  bg-no-repeat bg-cover bg-center opacity-80 bg-[url(/gradientBackground.png)]"></div>
+          <div class="relative z-10 h-full">
             <Outlet />
           </div>
         </div>
