@@ -3,8 +3,8 @@ import { assets } from "../assets/assets";
 
 const Footer = () => {
   return (
-    <footer className="px-6 md:px-16 lg:px-24 xl:px-32 pt-8 w-full text-gray-500 mt-20">
-      <div className="flex flex-col md:flex-row justify-between w-full gap-10 border-b border-gray-500/30 pb-6">
+    <footer className="px-6 md:px-16 lg:px-24 xl:px-32 pt-8 w-full bg-gray-50 text-gray-500 mt-20">
+      <div className="flex flex-col md:flex-row justify-between w-full gap-10 border-b pt-4 border-gray-500/20 pb-6">
         <div className="md:max-w-96">
           <div className="flex items-end-safe">
             <img
@@ -23,7 +23,7 @@ const Footer = () => {
             Write articles, generate images, and enhance your workflow.
           </p>
         </div>
-        <div className="flex-1 flex items-start md:justify-end gap-20">
+        <div className="flex-1 flex items-start md:justify-end gap-10 md:">
           <div>
             <h2 className="font-semibold mb-5 text-gray-800">Company</h2>
             <ul className="text-sm space-y-2">
@@ -56,7 +56,7 @@ const Footer = () => {
                   type="email"
                   placeholder="Enter your email"
                 />
-                <button className="bg-primary w-24 h-9 text-white rounded cursor-pointer">
+                <button className="bg-primary w-24 h-9 px-2 text-white rounded cursor-pointer">
                   Subscribe
                 </button>
               </div>

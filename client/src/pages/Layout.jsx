@@ -11,12 +11,12 @@ const Layout = () => {
   const [sidebar, setSidebar] = useState(false);
   return user ? (
     <div className="flex flex-col items-start justify-start h-screen">
-      <nav className=" w-full px-8 min-h-14 flex items-center justify-between border-b border-gray-200">
+      <nav className="w-full px-6 min-h-14 flex items-center justify-between border-b border-gray-200">
         <div className="flex items-end-safe py-2">
           <img
             src={assets.logo}
             alt="logo"
-            className="h-10  cursor-pointer"
+            className="h-10 cursor-pointer"
             onClick={() => navigate("/")}
           />
           <p className="text-2xl font-semibold text-primary">
