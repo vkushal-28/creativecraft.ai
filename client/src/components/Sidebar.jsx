@@ -38,7 +38,9 @@ const Sidebar = ({ sidebar, setSidebar }) => {
           alt=""
           className="w-13 rounded-full mx-auto"
         />
-        <h1 className="mt-1 text-center">{user?.fullName}</h1>
+        <h1 className="mt-1 text-center text-slate-700 font-semibold">
+          {user?.fullName}
+        </h1>
 
         <div className="px-4 mt-5 text-sm text-gray-600 font-medium">
           {navItems.map(({ to, label, Icon }) => (

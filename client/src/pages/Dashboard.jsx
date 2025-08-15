@@ -76,7 +76,9 @@ const Dashboard = () => {
         </div>
       ) : (
         <div className="spacy-y-3 ">
-          <p className="mt-6 mb-4 text-lg">Recent Creations</p>
+          <p className="mt-6 mb-4 text-xl font-semibold text-slate-700">
+            Recent Creations
+          </p>
           {creations.map((item) => (
             <CreationItem key={item.id} item={item} />
           ))}

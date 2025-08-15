@@ -8,7 +8,7 @@ const FormSection = ({ onHandleSubmit, title, iconColor, children }) => {
       onSubmit={onHandleSubmit}>
       <div className="flex items-center gap-3 ">
         <Sparkle className={`w-6 ${iconColor}`} />
-        <h1 className="text-xl font-semibold">{title}</h1>
+        <h1 className="text-xl font-semibold text-slate-700">{title}</h1>
       </div>
       {...children}
     </form>
