@@ -6,7 +6,17 @@ const Footer = () => {
     <footer className="px-6 md:px-16 lg:px-24 xl:px-32 pt-8 w-full text-gray-500 mt-20">
       <div className="flex flex-col md:flex-row justify-between w-full gap-10 border-b border-gray-500/30 pb-6">
         <div className="md:max-w-96">
-          <img className="h-9" src={assets.logo} alt="dummyLogoDark" />
+          <div className="flex items-end-safe">
+            <img
+              src={assets.logo}
+              alt="logo"
+              className="h-9  cursor-pointer"
+              onClick={() => navigate("/")}
+            />
+            <p className="text-xl font-semibold text-primary ">
+              CreativeCraft.AI
+            </p>
+          </div>{" "}
           <p className="mt-6 text-sm">
             Experience the power of AI with QuickAi. <br />
             Transform your content creation with our suite of premium AI tools.

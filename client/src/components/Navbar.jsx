@@ -12,13 +12,15 @@ const Navbar = () => {
 
   return (
     <div className="fixed z-5 w-full backdrop-blur-2xl flex justify-between items-center py-3 sm:px-20 xl:px-32 ">
-      <img
-        src={assets.logo}
-        alt="logo"
-        className="w-32 sm:w-44 cursor-pointer"
-        onClick={() => navigate("/")}
-      />
-
+      <div className="flex items-end-safe">
+        <img
+          src={assets.logo}
+          alt="logo"
+          className="h-12  cursor-pointer"
+          onClick={() => navigate("/")}
+        />
+        <p className="text-2xl font-semibold text-primary ">CreativeCraft.AI</p>
+      </div>
       {user ? (
         <UserButton />
       ) : (
