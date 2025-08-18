@@ -4,7 +4,6 @@ import { assets } from "../assets/assets";
 import { Menu, X } from "lucide-react";
 import Sidebar from "../components/Sidebar";
 import { SignIn, useUser } from "@clerk/clerk-react";
-import gradientBackgroundImage from "../assets/10515343.png";
 
 const Layout = () => {
   const navigate = useNavigate();
@@ -39,7 +38,7 @@ const Layout = () => {
       <div className=" flex-1 w-full flex h-[calc(100vh-64px)]">
         <Sidebar sidebar={sidebar} setSidebar={setSidebar} />
         <div class="relative flex-1 ">
-          <div class="absolute inset-0  bg-no-repeat bg-cover bg-center opacity-80 bg-[url(/gradientBackground.png)]"></div>
+          <div class="absolute inset-0  bg-no-repeat bg-cover  bg-center opacity-80 bg-[url(/bgbg.jpg)]"></div>
           <div class="relative z-10 h-full">
             <Outlet />
           </div>
