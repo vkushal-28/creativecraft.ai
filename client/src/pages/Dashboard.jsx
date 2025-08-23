@@ -48,7 +48,13 @@ const Dashboard = () => {
         <div className="flex justify-between items-center w-72 p-4 px-6 bg-white rounded-xl border border-gray-200 shadow-lg">
           <div className="text-slate-600">
             <p className="text-sm">Total Creations</p>
-            <h2 className="text-xl font-semibold">{creations.length}</h2>
+            <h2 className="text-xl font-semibold">
+              {loading ? (
+                <div className=" w-7 h-7 bg-gray-200 rounded-lg " />
+              ) : (
+                creations.length
+              )}
+            </h2>
           </div>
           <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#3588F2] to-[#0BB0D7] text-white flex justify-center items-center">
             <Sparkles className="w-5 text-white" />
@@ -76,9 +82,6 @@ const Dashboard = () => {
           Recent Creations
         </p>
         {loading ? (
-          // <div className="flex justify-center items-center h-3/4">
-          //   <div className="animate-spin rounded-full h-11 w-11 border-3 border-purple-500 border-t-transparent"></div>
-          // </div>
           <DashboardLoader />
         ) : (
           creations.map((item) => <CreationItem key={item.id} item={item} />)
