@@ -6,6 +6,7 @@ import CreationItem from "../components/CreationItem";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useAuth } from "@clerk/clerk-react";
+import { DashboardLoader } from "../components/common/loaders";
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -70,20 +71,19 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {loading ? (
-        <div className="flex justify-center items-center h-3/4">
-          <div className="animate-spin rounded-full h-11 w-11 border-3 border-purple-500 border-t-transparent"></div>
-        </div>
-      ) : (
-        <div className="spacy-y-3 ">
-          <p className="mt-6 mb-4 text-xl font-semibold text-slate-700">
-            Recent Creations
-          </p>
-          {creations.map((item) => (
-            <CreationItem key={item.id} item={item} />
-          ))}
-        </div>
-      )}
+      <div className="spacy-y-3 ">
+        <p className="mt-6 mb-4 text-xl font-semibold text-slate-700">
+          Recent Creations
+        </p>
+        {loading ? (
+          // <div className="flex justify-center items-center h-3/4">
+          //   <div className="animate-spin rounded-full h-11 w-11 border-3 border-purple-500 border-t-transparent"></div>
+          // </div>
+          <DashboardLoader />
+        ) : (
+          creations.map((item) => <CreationItem key={item.id} item={item} />)
+        )}
+      </div>
     </div>
   );
 };
