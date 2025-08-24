@@ -1,86 +1,102 @@
-import { Eraser, ImagePlus, X } from "lucide-react";
-import React, { useState } from "react";
+import { Eraser, ImagePlus } from "lucide-react";
+import React, {
+  useState,
+  useCallback,
+  useMemo,
+  useRef,
+  useEffect,
+} from "react";
+import api from "../utils/axios";
 import toast from "react-hot-toast";
-import axios from "axios";
 import { useAuth } from "@clerk/clerk-react";
-import GeneratedOutputSection from "../components/common/GeneratedOutputSection";
 import BaseSection from "../components/common/BaseSection";
-import FormSection from "../components/common/FormSection";
 import SubmitButton from "../components/common/Button";
+import FormSection from "../components/common/FormSection";
+import GeneratedOutputSection from "../components/common/GeneratedOutputSection";
 
-axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
+// Memoize GeneratedOutputSection to avoid unnecessary re-renders
+const MemoizedGeneratedOutputSection = React.memo(GeneratedOutputSection);
 
 const RemoveBackground = () => {
   const [imageData, setImageData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [content, setContent] = useState("");
-
-  const { getToken } = useAuth();
-
   const [dragActive, setDragActive] = useState(false);
 
-  const handleFile = (file) => {
-    if (file && file.type.startsWith("image/")) {
+  const { getToken } = useAuth();
+  const controllerRef = useRef(null);
+
+  const handleFile = useCallback((file) => {
+    if (file?.type.startsWith("image/")) {
       setImageData(file);
     }
-  };
+  }, []);
 
-  const handleDrag = (e) => {
+  const handleDrag = useCallback((e) => {
     e.preventDefault();
     e.stopPropagation();
+    setDragActive(["dragenter", "dragover"].includes(e.type));
+  }, []);
 
-    if (e.type === "dragenter" || e.type === "dragover") {
-      setDragActive(true);
-    } else if (e.type === "dragleave") {
+  const handleDrop = useCallback(
+    (e) => {
+      e.preventDefault();
+      e.stopPropagation();
       setDragActive(false);
-    }
-  };
+      if (e.dataTransfer.files?.[0]) handleFile(e.dataTransfer.files[0]);
+    },
+    [handleFile]
+  );
 
-  const handleDrop = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
+  const handleDelete = useCallback(() => setImageData(null), []);
 
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      handleFile(e.dataTransfer.files[0]);
-    }
-  };
+  const previewUrl = useMemo(
+    () => (imageData ? URL.createObjectURL(imageData) : null),
+    [imageData]
+  );
 
-  const handleDelete = () => {
-    setImageData(null);
-  };
+  useEffect(() => {
+    return () => {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+    };
+  }, [previewUrl]);
 
-  const onSubmitHandler = async (e) => {
-    e.preventDefault();
-    try {
-      setLoading(true);
-      const formData = new FormData();
-      formData.append("image", imageData);
+  const onSubmitHandler = useCallback(
+    async (e) => {
+      e.preventDefault();
+      if (!imageData) return;
 
-      const { data } = await axios.post(
-        "api/ai/remove-image-background",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${await getToken()}`,
-          },
-        }
-      );
+      if (controllerRef.current) controllerRef.current.abort();
+      controllerRef.current = new AbortController();
 
-      if (data.success) {
-        setContent(data.content);
-      } else {
-        toast.error(data.message);
+      try {
+        setLoading(true);
+        const formData = new FormData();
+        formData.append("image", imageData);
+
+        const { data } = await api.post(
+          "api/ai/remove-image-background",
+          formData,
+          {
+            headers: { Authorization: `Bearer ${await getToken()}` },
+            signal: controllerRef.current.signal,
+          }
+        );
+
+        if (data.success) setContent(data.content);
+        else toast.error(data.message);
+      } catch (error) {
+        if (error.name !== "CanceledError") toast.error(error.message);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      toast.error(error.message);
-    }
-    setLoading(false);
-  };
-
+    },
+    [imageData, getToken]
+  );
   return (
     <BaseSection>
       {/* ----- Form Section ----- */}
+
       <FormSection
         onHandleSubmit={onSubmitHandler}
         title={"Remove Background"}
@@ -125,20 +141,6 @@ const RemoveBackground = () => {
             </div>
           ) : (
             <div className="flex flex-col items-center text-gray-500 text-sm">
-              {/* <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-8 w-8 mb-2 text-red-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 15a4 4 0 014-4h1V7a4 4 0 118 0v4h1a4 4 0 014 4v4H3v-4z"
-                />
-              </svg> */}
-
               <ImagePlus className="h-10 w-10 mb-2 text-red-400 text-center font-light" />
               <p className="text-center">
                 Drag & Drop image here <br /> or{" "}
@@ -150,7 +152,7 @@ const RemoveBackground = () => {
           )}
         </label>
 
-        <p className="text-xs text-gray-500 ">
+        <p className="text-xs text-gray-500 mb-5">
           Supports JPG, PNG, and other image formats
         </p>
         <SubmitButton
@@ -162,7 +164,8 @@ const RemoveBackground = () => {
       </FormSection>
 
       {/* ----- Result Section ----- */}
-      <GeneratedOutputSection
+
+      <MemoizedGeneratedOutputSection
         type="remove-background"
         loading={loading}
         content={content}

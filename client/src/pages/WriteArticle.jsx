@@ -1,14 +1,15 @@
 import { Edit } from "lucide-react";
 import React, { useState } from "react";
-import axios from "axios";
 import { useAuth } from "@clerk/clerk-react";
 import toast from "react-hot-toast";
 import GeneratedOutputSection from "../components/common/GeneratedOutputSection";
 import SubmitButton from "../components/common/Button";
 import BaseSection from "../components/common/BaseSection";
 import FormSection from "../components/common/FormSection";
+import api from "../utils/axios";
 
-axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
+// Memoize GeneratedOutputSection to avoid unnecessary re-renders
+const MemoizedGeneratedOutputSection = React.memo(GeneratedOutputSection);
 
 const WriteArticle = () => {
   const articleLength = [
@@ -31,7 +32,7 @@ const WriteArticle = () => {
       setLoading(true);
       const prompt = `Write an article about ${input} in ${selectedLength.text}`;
 
-      const { data } = await axios.post(
+      const { data } = await api.post(
         "api/ai/generate-article",
         {
           prompt,
@@ -94,7 +95,7 @@ const WriteArticle = () => {
       </FormSection>
 
       {/* ----- Result Section ----- */}
-      <GeneratedOutputSection
+      <MemoizedGeneratedOutputSection
         type="generate-article"
         loading={loading}
         content={content}
