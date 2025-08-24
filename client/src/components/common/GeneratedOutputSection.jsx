@@ -28,7 +28,21 @@ const GeneratedOutputSection = memo(({ type, loading, isImage, content }) => {
         <div className="flex-1 flex flex-col justify-center items-center w-full">
           <div className="w-full h-full overflow-hidden bg-gray-200 animate-pulse relative flex items-center justify-center rounded-lg">
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-[shimmer_1.5s_infinite]" />
-            <span className="text-gray-500">Analyzing resume with AI...</span>
+            <span className="text-gray-500">
+              {type === "generate-article"
+                ? "Generating article with AI..."
+                : type === "blog-title"
+                ? "Generating blog titles with AI..."
+                : type === "generate-image"
+                ? "Generating image with AI..."
+                : type === "remove-background"
+                ? "Removing background with AI..."
+                : type === "remove-object"
+                ? "Removing object with AI..."
+                : type === "review-resume"
+                ? "Analyzing resume with AI..."
+                : ""}
+            </span>
           </div>
         </div>
       ) : !content ? (

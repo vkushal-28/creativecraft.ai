@@ -30,7 +30,7 @@ const WriteArticle = () => {
 
     try {
       setLoading(true);
-      const prompt = `Write an article about ${input} in ${selectedLength.text}`;
+      const prompt = `Write an article about ${input} in ${selectedLength.text} words`;
 
       const { data } = await api.post(
         "api/ai/generate-article",
