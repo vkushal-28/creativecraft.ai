@@ -14,7 +14,7 @@ import { Toaster } from "react-hot-toast";
 
 const App = () => {
   return (
-    <div>
+    <>
       <Toaster />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -29,7 +29,7 @@ const App = () => {
           <Route path="community" element={<Community />} />
         </Route>
       </Routes>
-    </div>
+    </>
   );
 };
 

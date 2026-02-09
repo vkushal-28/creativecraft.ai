@@ -59,7 +59,7 @@ const AuthFallback = () => (
     {/* </Suspense> */}
   </div>
 );
-
+  
 const Layout = () => {
   const { user } = useUser();
   const [sidebar, setSidebar] = useState(false);
@@ -73,12 +73,11 @@ const Layout = () => {
       <Navbar sidebar={sidebar} toggleSidebar={toggleSidebar} />
       <div className="flex flex-1 h-[calc(100vh-56px)]">
         {/* <Suspense fallback={<div>Loading sidebar...</div>}> */}
-        <Sidebar sidebar={sidebar} toggleSidebar={toggleSidebar} />
-        {/* </Suspense> */}
+        <Sidebar sidebar={sidebar} setSidebar={toggleSidebar} />
         <main className="relative flex-1">
           <Background />
           <div className="relative z-10 h-full">
-            <Outlet />
+            <Outlet /> {/* Routes will render here */}
           </div>
         </main>
       </div>

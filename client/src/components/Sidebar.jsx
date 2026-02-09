@@ -15,14 +15,14 @@ import { NavLink } from "react-router-dom";
 
 // Navigation items
 const navItems = [
-  { to: "/ai", label: "Dashboard", Icon: House },
-  { to: "/ai/write-article", label: "Write Article", Icon: SquarePen },
-  { to: "/ai/blog-titles", label: "Blog Titles", Icon: Hash },
-  { to: "/ai/generate-images", label: "Generate Images", Icon: Image },
-  { to: "/ai/remove-background", label: "Remove Background", Icon: Eraser },
-  { to: "/ai/remove-object", label: "Remove Object", Icon: Scissors },
-  { to: "/ai/review-resume", label: "Review Resume", Icon: FileText },
-  { to: "/ai/community", label: "Community", Icon: Users },
+  { to: "", label: "Dashboard", Icon: House },
+  { to: "write-article", label: "Write Article", Icon: SquarePen },
+  { to: "blog-titles", label: "Blog Titles", Icon: Hash },
+  { to: "generate-images", label: "Generate Images", Icon: Image },
+  { to: "remove-background", label: "Remove Background", Icon: Eraser },
+  { to: "remove-object", label: "Remove Object", Icon: Scissors },
+  { to: "review-resume", label: "Review Resume", Icon: FileText },
+  { to: "community", label: "Community", Icon: Users },
 ];
 
 // Tailwind class constants
@@ -39,17 +39,13 @@ const SidebarLinks = React.memo(({ setSidebar }) => {
         <NavLink
           key={to}
           to={to}
-          end={to === "/ai"}
+          end={to === ""} // index route
           onClick={() => setSidebar(false)}
           className={({ isActive }) =>
             `${linkBase} ${isActive ? activeLink : ""}`
           }>
-          {({ isActive }) => (
-            <>
-              <Icon className={`w-4 h-4 ${isActive ? "text-white" : ""}`} />
-              {label}
-            </>
-          )}
+          <Icon className="w-4 h-4" />
+          {label}
         </NavLink>
       )),
     [setSidebar]
@@ -67,7 +63,7 @@ const SidebarProfile = React.memo(({ user, openUserProfile, signOut }) => {
   const { fullName, imageUrl } = user || {};
 
   return (
-    <div className="w-full border-t border-gray-200 p-4 flex items-center justify-between">
+    <div className="w-full border-t border-gray-200 p-4 flex items-center justify-between ">
       <div
         className="flex gap-2 items-center cursor-pointer"
         onClick={openUserProfile}>
@@ -99,7 +95,7 @@ const Sidebar = React.memo(({ sidebar, setSidebar }) => {
 
   return (
     <div
-      className={`w-60 bg-white shadow-lg flex flex-col justify-between items-center max-sm:absolute top-14 bottom-0 z-20
+      className={`w-60 bg-white shadow-lg flex flex-col justify-between items-center max-sm:absolute top-14 bottom-0 z-10
         ${
           sidebar ? "translate-x-0" : "max-sm:-translate-x-full"
         } transition-transform duration-300 ease-in-out`}>

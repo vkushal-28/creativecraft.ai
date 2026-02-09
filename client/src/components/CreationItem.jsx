@@ -26,7 +26,7 @@ const CreationItem = ({ item }) => {
               <img
                 src={item.content}
                 alt="image"
-                className="mt-3 w-full max-w-md"
+                className="mt-3 w-full rounded-lg max-w-sm"
               />
             </div>
           ) : (
