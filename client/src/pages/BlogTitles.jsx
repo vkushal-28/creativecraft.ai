@@ -1,6 +1,6 @@
 import { useAuth } from "@clerk/clerk-react";
 import { Hash } from "lucide-react";
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useTransition } from "react";
 import toast from "react-hot-toast";
 import GeneratedOutputSection from "../components/common/GeneratedOutputSection";
 import SubmitButton from "../components/common/Button";
@@ -40,43 +40,52 @@ const CategorySelector = ({ categories, selected, onSelect }) => (
 );
 
 const BlogTitles = () => {
+  const { getToken } = useAuth();
+
   const [selectedCategory, setSelectedCategory] = useState(blogCategories[0]);
   const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
   const [content, setContent] = useState("");
 
-  const { getToken } = useAuth();
+  const [isPending, startTransition] = useTransition();
 
   const handleCategoryClick = useCallback((item) => {
     setSelectedCategory(item);
   }, []);
 
+  const generateTitle = useCallback(async () => {
+    const prompt = `Generate a blog title for the keyword "${input}" in the category "${selectedCategory}".`;
+
+    const token = await getToken();
+
+    const { data } = await api.post(
+      "api/ai/generate-blog-title",
+      { prompt },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    if (!data?.success) {
+      throw new Error(data?.message || "Failed to generate title");
+    }
+
+    return data.content;
+  }, [input, selectedCategory, getToken]);
+
   const onSubmitHandler = useCallback(
-    async (e) => {
+    (e) => {
       e.preventDefault();
 
-      try {
-        setLoading(true);
-        const prompt = `Generate a blog title for the keyword ${input} in the category ${selectedCategory}.`;
+      if (!input.trim()) return;
 
-        const { data } = await api.post(
-          "api/ai/generate-blog-title",
-          { prompt },
-          { headers: { Authorization: `Bearer ${await getToken()}` } }
-        );
-
-        data.success ? setContent(data.content) : toast.error(data.message);
-      } catch (error) {
-        toast.error(
-          error.response?.data?.message ||
-            error.message ||
-            "Something went wrong"
-        );
-      } finally {
-        setLoading(false);
-      }
+      startTransition(async () => {
+        try {
+          const result = await generateTitle();
+          setContent(result);
+        } catch (err) {
+          toast.error(err.message || "Something went wrong");
+        }
+      });
     },
-    [input, selectedCategory, getToken]
+    [input, generateTitle]
   );
 
   return (
@@ -107,17 +116,17 @@ const BlogTitles = () => {
 
         <SubmitButton
           btnText="Generate Article"
-          loading={loading}
+          loading={isPending}
           btnIcon={Hash}
           btnColor="from-fuchsia-500 via-purple-600 to-pink-600"
-          disabled={!input.trim() || loading}
+          disabled={!input.trim() || isPending}
         />
       </FormSection>
 
       {/* ----- Result Section ----- */}
       <MemoizedGeneratedOutputSection
         type="blog-title"
-        loading={loading}
+        loading={isPending}
         content={content}
       />
     </BaseSection>

@@ -1,41 +1,49 @@
-import React, { useState, useEffect, useCallback, Suspense, lazy } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  Suspense,
+  lazy,
+  useTransition,
+} from "react";
 import { useUser, useAuth } from "@clerk/clerk-react";
 import toast from "react-hot-toast";
-import api from "../utils/axios"; // custom axios instance
+import api from "../utils/axios";
 import { CommunityLoader, ImageCardLoader } from "../components/common/loaders";
 import CommunityGalleryModal from "../components/CommunityGalleryModal";
 const ImageCard = lazy(() => import("../components/ImageCard"));
 
 const Community = () => {
-  const [creations, setCreations] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  // Gallery state
-  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(0);
-
   const { user } = useUser();
   const { getToken } = useAuth();
 
-  // Fetch community images
-  const fetchCreations = useCallback(async () => {
-    try {
-      const token = await getToken();
-      const { data } = await api.get("api/user/get-published-creations", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+  const [creations, setCreations] = useState([]);
+  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-      if (data.success) {
+  const [isPending, startTransition] = useTransition();
+
+  // Fetch community images
+  const fetchCreations = useCallback(() => {
+    if (!user) return;
+
+    startTransition(async () => {
+      try {
+        const token = await getToken();
+        const { data } = await api.get("api/user/get-published-creations", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (!data?.success) {
+          throw new Error(data?.message || "Failed to load creations");
+        }
+
         setCreations(data.creations);
-      } else {
-        toast.error(data.message);
+      } catch (err) {
+        toast.error(err.message || "Failed to load creations");
       }
-    } catch (error) {
-      toast.error(error.response?.data?.message || error.message);
-    } finally {
-      setLoading(false);
-    }
-  }, [getToken]);
+    });
+  }, [getToken, user]);
 
   // Like toggle
   const imageLikeToggle = useCallback(
@@ -72,8 +80,8 @@ const Community = () => {
   );
 
   useEffect(() => {
-    if (user) fetchCreations();
-  }, [user, fetchCreations]);
+    fetchCreations();
+  }, [fetchCreations]);
 
   // Open gallery
   const openGallery = (index) => {
@@ -85,7 +93,7 @@ const Community = () => {
     <div className="flex-1 h-full flex flex-col p-6">
       <h1 className="text-xl font-semibold text-slate-700 mb-4">Community</h1>
 
-      {!loading ? (
+      {!isPending ? (
         <div className="h-full w-full rounded-xl overflow-y-auto">
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {creations.map((creation, index) => (
