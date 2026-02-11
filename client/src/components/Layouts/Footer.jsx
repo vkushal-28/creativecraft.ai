@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { assets } from "../assets/assets";
+import { assets } from "../../assets/assets";
 import { useNavigate } from "react-router-dom";
 
 // Data for links

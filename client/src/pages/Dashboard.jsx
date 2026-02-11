@@ -25,10 +25,10 @@ const StatCard = memo(function StatCard({
   gradient,
 }) {
   return (
-    <div className="flex w-[50%] md:w-72 items-center justify-between rounded-xl border border-gray-200 bg-white p-4  shadow-lg">
+    <div className="flex w-[50%] md:w-72 items-center justify-between rounded-xl border border-gray-200 bg-white p-2 px-3 md:p-4  shadow-lg">
       <div className="text-slate-600">
         <p className="text-sm">{title}</p>
-        <h2 className="text-xl font-semibold">{value}</h2>
+        <h2 className="md:text-xl font-semibold">{value}</h2>
       </div>
 
       <div
@@ -48,6 +48,10 @@ const Dashboard = () => {
 
   const [selectedItem, setSelectedItem] = useState(null);
 
+  const activeSubscription = user?.subscriptions?.find(
+    (sub) => sub.status === "active"
+  );
+  console.log(user?.subscriptions);
   const fetchDashboardData = useCallback(async () => {
     try {
       const token = await getToken();
@@ -130,7 +134,7 @@ const Dashboard = () => {
       </div>
 
       {/* Recent Creations */}
-      <section className="mt-6 space-y-4">
+      <section className="mt-3 md:mt-6 space-y-4">
         <h2 className="text-xl font-semibold text-slate-700">
           Recent Creations
         </h2>

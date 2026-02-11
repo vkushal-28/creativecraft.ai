@@ -1,9 +1,9 @@
-import React, { useState, useCallback, lazy, Suspense } from "react";
+import React, { useState, useCallback } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { assets } from "../assets/assets";
 import { Menu, X } from "lucide-react";
 import { useUser, SignIn } from "@clerk/clerk-react";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../components/Layouts/Sidebar";
 
 // Lazy load heavy components
 // const Sidebar = lazy(() => import("../components/Sidebar"));

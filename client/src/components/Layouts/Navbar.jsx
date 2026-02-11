@@ -1,5 +1,5 @@
 import React, { memo, useCallback } from "react";
-import { assets } from "../assets/assets";
+import { assets } from "../../assets/assets";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import {
@@ -8,7 +8,7 @@ import {
   ClerkLoading,
   useUser,
 } from "@clerk/clerk-react";
-import { AvatarSkeleton } from "./common/loaders";
+import { AvatarSkeleton } from "../common/loaders";
 
 // Destructure static assets outside component to avoid re-evaluation
 const { logo } = assets;

@@ -51,11 +51,7 @@ const SidebarLinks = React.memo(({ setSidebar }) => {
     [setSidebar]
   );
 
-  return (
-    <div className="px-4 mt-5 text-sm text-gray-600 font-medium">
-      {navLinks}
-    </div>
-  );
+  return <div className="px-4 mt-5 text-gray-600 font-medium">{navLinks}</div>;
 });
 
 // Sidebar user profile and logout

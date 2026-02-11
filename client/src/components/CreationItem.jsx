@@ -8,8 +8,8 @@ const CreationItem = ({ item, onSelect }) => {
       onClick={() => onSelect?.(item)}>
       {/* Top Section */}
       <div className="flex justify-between items-start mb-3">
-        <span className="text-xs font-medium px-3 py-1 rounded-full bg-primary/10 text-primary">
-          {item.type}
+        <span className="text-xs font-medium px-3 py-1 rounded-full bg-primary/10 text-primary capitalize">
+          {item.type.replaceAll("-", " ")}
         </span>
 
         <button className="xl:opacity-0  xl:group-hover:opacity-100 transition text-gray-400 hover:text-gray-600 cursor-pointer">
@@ -18,12 +18,12 @@ const CreationItem = ({ item, onSelect }) => {
       </div>
 
       {/* Prompt */}
-      <p className="text-sm text-gray-800 line-clamp-2 leading-relaxed h-12">
+      <p className=" text-gray-800 line-clamp-2 leading-relaxed h-12">
         {item.prompt}
       </p>
 
       {/* Footer */}
-      <div className="mt-2 pt-1 border-t border-gray-100 text-xs  text-gray-500">
+      <div className="mt-2 pt-1 border-t border-gray-200 text-sm  text-gray-500">
         Created on - {new Date(item.created_at).toLocaleDateString()}
       </div>
     </div>
