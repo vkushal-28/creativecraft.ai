@@ -17,7 +17,7 @@ const CommunityGalleryModal = memo(
     return (
       /* 🔹 Overlay (click closes modal) */
       <div
-        className="fixed inset-0 z-20 bg-black/90 flex items-center justify-center"
+        className="fixed inset-0 scale-z-100 bg-black/90 flex items-center justify-center"
         onClick={onClose}>
         {/* Close button */}
         <button

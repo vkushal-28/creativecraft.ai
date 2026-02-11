@@ -1,65 +1,114 @@
-import React, { useEffect, useState, useCallback } from "react";
+import {
+  lazy,
+  memo,
+  useCallback,
+  useEffect,
+  useState,
+  useTransition,
+  Suspense,
+} from "react";
 import { Gem, Sparkles } from "lucide-react";
 import { Protect, useUser, useAuth } from "@clerk/clerk-react";
-import CreationItem from "../components/CreationItem";
 import toast from "react-hot-toast";
-import api from "../utils/axios"; // axios instance
-import { DashboardLoader } from "../components/common/loaders";
+import {
+  DashboardCardLoader,
+  DashboardLoader,
+} from "../components/common/loaders";
+import api from "../utils/axios";
 
-// Reusable stat card
-const StatCard = ({ title, value, icon: Icon, gradient }) => (
-  <div className="flex justify-between items-center w-72 p-4 px-6 bg-white rounded-xl border border-gray-200 shadow-lg">
-    <div className="text-slate-600">
-      <p className="text-sm">{title}</p>
-      <h2 className="text-xl font-semibold">{value}</h2>
+const CreationItem = lazy(() => import("../components/CreationItem"));
+
+const StatCard = memo(function StatCard({
+  title,
+  value,
+  icon: Icon,
+  gradient,
+}) {
+  return (
+    <div className="flex w-[50%] md:w-72 items-center justify-between rounded-xl border border-gray-200 bg-white p-4  shadow-lg">
+      <div className="text-slate-600">
+        <p className="text-sm">{title}</p>
+        <h2 className="text-xl font-semibold">{value}</h2>
+      </div>
+
+      <div
+        className={`flex h-10 w-10 items-center justify-center rounded-lg ${gradient} text-white`}>
+        <Icon className="h-5 w-5" />
+      </div>
     </div>
-    <div
-      className={`w-10 h-10 rounded-lg ${gradient} text-white flex justify-center items-center`}>
-      <Icon className="w-5 text-white" />
-    </div>
-  </div>
-);
+  );
+});
 
 const Dashboard = () => {
-  const [creations, setCreations] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  const { getToken } = useAuth();
   const { user } = useUser();
+  const { getToken } = useAuth();
 
-  const getDashboardData = useCallback(async () => {
+  const [creations, setCreations] = useState([]);
+  const [isPending, startTransition] = useTransition();
+
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const fetchDashboardData = useCallback(async () => {
     try {
       const token = await getToken();
-      const { data } = await api.get("api/user/get-user-creations", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      startTransition(async () => {
+        const { data } = await api.get("/api/user/get-user-creations", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-      if (data.success) {
-        setCreations(data.creations);
-      } else {
-        toast.error(data.message);
-        setCreations([]);
-      }
+        if (!data?.success) {
+          throw new Error(data?.message);
+        }
+
+        // Non-blocking state update
+        setCreations(data.creations || []);
+      });
     } catch (error) {
-      toast.error(error.response?.data?.message || error.message);
-    } finally {
-      setLoading(false);
+      toast.error(error?.response?.data?.message || error.message);
     }
   }, [getToken]);
 
   useEffect(() => {
-    if (user) getDashboardData();
-  }, [user, getDashboardData]);
+    if (user) {
+      fetchDashboardData();
+    }
+  }, [user, fetchDashboardData]);
+
+  // --------
+  const closeModal = useCallback(() => {
+    console.log("first");
+    setSelectedItem(null);
+  }, []);
+
+  // Close on ESC
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === "Escape") closeModal();
+    };
+
+    if (selectedItem) {
+      document.body.style.overflow = "hidden";
+      window.addEventListener("keydown", handleEsc);
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, [selectedItem, closeModal]);
+  // ---------------
 
   return (
-    <div className="h-full overflow-y-scroll p-6">
-      {/* Stats Section */}
-      <div className="flex justify-start gap-4 flex-wrap">
+    <div className="h-full overflow-y-auto p-2 md:p-6">
+      {/* Stats */}
+      <div className="flex max-md:flex-row w-full gap-2 md:gap-4">
         <StatCard
           title="Total Creations"
           value={
-            loading ? (
-              <div className="w-7 h-7 bg-gray-200 rounded-lg animate-pulse" />
+            isPending ? (
+              <div className="h-6 w-8 animate-pulse rounded bg-gray-200" />
             ) : (
               creations.length
             )
@@ -81,18 +130,78 @@ const Dashboard = () => {
       </div>
 
       {/* Recent Creations */}
-      <div className="space-y-3">
-        <p className="mt-6 mb-4 text-xl font-semibold text-slate-700">
+      <section className="mt-6 space-y-4">
+        <h2 className="text-xl font-semibold text-slate-700">
           Recent Creations
-        </p>
-        {loading ? (
-          <DashboardLoader />
-        ) : creations.length > 0 ? (
-          creations.map((item) => <CreationItem key={item.id} item={item} />)
-        ) : (
-          <p className="text-slate-500">No creations yet.</p>
-        )}
-      </div>
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 xl:gap-3">
+          {isPending ? (
+            <DashboardLoader />
+          ) : creations.length > 0 ? (
+            creations.map((item) => (
+              <Suspense fallback={<DashboardCardLoader />} key={item.id}>
+                <CreationItem
+                  item={item}
+                  onSelect={() => setSelectedItem(item)}
+                />
+              </Suspense>
+            ))
+          ) : (
+            <p className="text-slate-500">No creations yet.</p>
+          )}
+        </div>
+      </section>
+      {selectedItem && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-5"
+          onClick={closeModal} // click on overlay closes modal
+        >
+          <div
+            onClick={(e) => e.stopPropagation()} // clicks inside modal don't close it
+            className={`bg-white rounded-2xl p-6 overflow-y-auto max-h-[90vh]  w-full ${
+              selectedItem.type === "image"
+                ? "max-w-xl"
+                : "w-full md:max-w-3xl xl:max-w-5xl"
+            } relative shadow-xl`}>
+            {/* Close Button */}
+            <button
+              onClick={closeModal}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 transition">
+              ✕
+            </button>
+
+            {/* Type Badge */}
+            <span className="text-xs font-medium px-3 py-1 rounded-full bg-primary/10 text-primary">
+              {selectedItem.type}
+            </span>
+
+            {/* Prompt */}
+            <div className="mt-4">
+              <h3 className="text-lg font-semibold mb-2">Prompt</h3>
+              <p className="text-sm text-gray-600">{selectedItem.prompt}</p>
+            </div>
+
+            {/* Output */}
+            <div className="mt-6">
+              <h3 className="text-lg font-semibold mb-3">Output</h3>
+              <div className="max-h-150 overflow-auto rounded-xl">
+                {selectedItem.type === "image" ? (
+                  <img
+                    src={selectedItem.content}
+                    alt="Generated"
+                    className="rounded-xl w-full"
+                  />
+                ) : (
+                  <div className="bg-gray-100 p-4 text-sm whitespace-pre-wrap text-gray-800">
+                    {selectedItem.content}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

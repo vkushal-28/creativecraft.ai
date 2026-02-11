@@ -90,12 +90,12 @@ const Community = () => {
   };
 
   return (
-    <div className="flex-1 h-full flex flex-col p-6">
+    <div className="flex-1 h-full flex flex-col p-2 md:p-6">
       <h1 className="text-xl font-semibold text-slate-700 mb-4">Community</h1>
 
       {!isPending ? (
         <div className="h-full w-full rounded-xl overflow-y-auto">
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-4">
             {creations.map((creation, index) => (
               <Suspense fallback={<ImageCardLoader />}>
                 <div key={creation.id} className="cursor-pointer">

@@ -91,32 +91,45 @@ const Sidebar = React.memo(({ sidebar, setSidebar }) => {
   const { user } = useUser();
   const { signOut, openUserProfile } = useClerk();
 
-  const handleCloseSidebar = useCallback(() => setSidebar(false), [setSidebar]);
+  const handleCloseSidebar = useCallback(() => {
+    setSidebar(false);
+  }, [setSidebar]);
 
   return (
-    <div
-      className={`w-60 bg-white shadow-lg flex flex-col justify-between items-center max-sm:absolute top-14 bottom-0 z-10
-        ${
-          sidebar ? "translate-x-0" : "max-sm:-translate-x-full"
-        } transition-transform duration-300 ease-in-out`}>
-      <div className="my-7 w-full">
-        <img
-          src={user?.imageUrl}
-          alt=""
-          className="w-13 rounded-full mx-auto"
+    <>
+      {/* 🔥 Overlay (Mobile Only) */}
+      {sidebar && (
+        <div
+          className="fixed inset-0 bg-black/50 z-20 sm:hidden"
+          onClick={handleCloseSidebar}
         />
-        <h1 className="mt-1 text-center text-slate-700 font-semibold">
-          {user?.fullName}
-        </h1>
-        <SidebarLinks setSidebar={handleCloseSidebar} />
-      </div>
+      )}
 
-      <SidebarProfile
-        user={user}
-        openUserProfile={openUserProfile}
-        signOut={signOut}
-      />
-    </div>
+      {/* 🔥 Sidebar */}
+      <div
+        className={`fixed sm:static max-sm:top-0 top-14  bottom-0 left-0 w-60 bg-white shadow-lg flex flex-col justify-between items-center z-30
+        transform transition-all duration-300 ease-in-out
+        ${sidebar ? "translate-x-0" : "-translate-x-full sm:translate-x-0"}`}>
+        <div className="my-7 w-full">
+          <img
+            src={user?.imageUrl}
+            alt=""
+            className="w-13 rounded-full mx-auto"
+          />
+          <h1 className="mt-1 text-center text-slate-700 font-semibold">
+            {user?.fullName}
+          </h1>
+
+          <SidebarLinks setSidebar={handleCloseSidebar} />
+        </div>
+
+        <SidebarProfile
+          user={user}
+          openUserProfile={openUserProfile}
+          signOut={signOut}
+        />
+      </div>
+    </>
   );
 });
 

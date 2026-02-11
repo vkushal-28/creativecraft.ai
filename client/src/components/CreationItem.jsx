@@ -1,45 +1,33 @@
+import { Trash2 } from "lucide-react";
 import React from "react";
-import { useState } from "react";
-import Markdown from "react-markdown";
 
-const CreationItem = ({ item }) => {
-  const [expanded, setExpanded] = useState(false);
+const CreationItem = ({ item, onSelect }) => {
   return (
     <div
-      onClick={() => setExpanded(!expanded)}
-      className="p-4 mb-4 max-w-5xl text-sm bg-white border border-gray-200 rounded-lg cursor-pointer shadow-lg">
-      <div className="flex justify-between items-center gap-4 ">
-        <div>
-          <h2>{item.prompt}</h2>
-          <p className="text-gray-500 ">
-            {item.type} - {new Date(item.created_at).toLocaleDateString()}
-          </p>
-        </div>
-        <button className="bg-[#EFF6FF] border border-[#BFDBFE] text-[#1E40AF] px-4 py-1 rounded-full">
+      className="group bg-white border border-gray-200 rounded-2xl p-3.5 md:p-5  hover:shadow-md hover:shadow-primary/25 transition-all duration-200 cursor-pointer"
+      onClick={() => onSelect?.(item)}>
+      {/* Top Section */}
+      <div className="flex justify-between items-start mb-3">
+        <span className="text-xs font-medium px-3 py-1 rounded-full bg-primary/10 text-primary">
           {item.type}
+        </span>
+
+        <button className="xl:opacity-0  xl:group-hover:opacity-100 transition text-gray-400 hover:text-gray-600 cursor-pointer">
+          <Trash2 size={16} className="text-red-400 hover:text-red-500" />
         </button>
       </div>
-      {expanded && (
-        <div>
-          {item.type === "image" ? (
-            <div>
-              <img
-                src={item.content}
-                alt="image"
-                className="mt-3 w-full rounded-lg max-w-sm"
-              />
-            </div>
-          ) : (
-            <div className="mt-3 h-full overflow-y-scroll text-sm text-slate-700 ">
-              <div className="reset-tw">
-                <Markdown>{item.content}</Markdown>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
+
+      {/* Prompt */}
+      <p className="text-sm text-gray-800 line-clamp-2 leading-relaxed h-12">
+        {item.prompt}
+      </p>
+
+      {/* Footer */}
+      <div className="mt-2 pt-1 border-t border-gray-100 text-xs  text-gray-500">
+        Created on - {new Date(item.created_at).toLocaleDateString()}
+      </div>
     </div>
   );
 };
 
-export default CreationItem;
+export default React.memo(CreationItem);

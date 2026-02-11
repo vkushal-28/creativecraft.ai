@@ -2,14 +2,22 @@ import React, { memo, useCallback } from "react";
 import { assets } from "../assets/assets";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import { useClerk, UserButton, useUser } from "@clerk/clerk-react";
+import {
+  useClerk,
+  UserButton,
+  ClerkLoading,
+  useUser,
+} from "@clerk/clerk-react";
+import { AvatarSkeleton } from "./common/loaders";
 
 // Destructure static assets outside component to avoid re-evaluation
 const { logo } = assets;
 
 // Memoized Auth Button
-const AuthButton = memo(({ user, openSignIn }) => {
+const AuthButton = memo(({ user, isLoaded, isSignedIn, openSignIn }) => {
+  console.log(isLoaded, isSignedIn, user, "isLoaded");
   if (user) return <UserButton />;
+  if (user === undefined) return <AvatarSkeleton />;
   return (
     <button
       onClick={openSignIn}
@@ -46,7 +54,7 @@ const Navbar = () => {
   return (
     <header className="fixed z-50 w-full backdrop-blur-2xl flex justify-between items-center py-3 px-6 xl:px-32">
       <NavbarLeft onLogoClick={handleLogoClick} />
-      <AuthButton user={user} openSignIn={openSignIn} />
+      <AuthButton user={user} openSignIn={openSignIn} isLoaded isSignedIn />
     </header>
   );
 };

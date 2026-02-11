@@ -1,20 +1,35 @@
 import React from "react";
 
+export const DashboardCardLoader = () => {
+  return (
+    <div className="animate-pulse group bg-white border border-gray-200 rounded-2xl p-3.5 md:p-5 cursor-pointer">
+      {/* Top Section */}
+      <div className="flex justify-between items-start mb-4">
+        {/* Type Badge */}
+        <div className="h-5.5 w-20 rounded-full bg-gray-300"></div>
+
+        {/* Trash Icon Placeholder */}
+        <div className="h-4 w-4 rounded-full bg-gray-300"></div>
+      </div>
+
+      {/* Prompt */}
+      <div className="space-y-2 mb-4">
+        <div className="h-4 rounded bg-gray-300"></div>
+        <div className="h-4 rounded bg-gray-300 w-5/6"></div>
+      </div>
+
+      {/* Footer */}
+      <div className="mt-2 pt-1 border-t border-gray-100 text-xs text-gray-500">
+        <div className="h-3 w-32 rounded bg-gray-300 mt-1"></div>
+      </div>
+    </div>
+  );
+};
 export const DashboardLoader = () => {
   return (
     <>
-      {Array(...Array(8).keys()).map((el) => (
-        <div className="p-4 mb-4 max-w-5xl text-sm bg-white border  border-gray-200 rounded-lg cursor-pointer shadow-lg">
-          <div className="flex justify-between items-center gap-4 animate-pulse ">
-            <div className="flex items-center justify-between w-full pt-1">
-              <div className="w-full">
-                <div className="h-3 bg-gray-300 rounded-full  w-[80%] mb-3"></div>
-                <div className=" w-[40%] h-3 bg-gray-200 rounded-full "></div>
-              </div>
-              <div className="h-7 bg-gray-300 rounded-full w-32"></div>
-            </div>
-          </div>
-        </div>
+      {Array(...Array(8).keys()).map((el, i) => (
+        <DashboardCardLoader key={i} />
       ))}
     </>
   );
@@ -23,7 +38,7 @@ export const DashboardLoader = () => {
 export const CommunityLoader = () => {
   return (
     <div className="h-full w-full  overflow-y-scroll">
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-4 xl:grid-cols-5 gap-4 ">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-4 ">
         {Array(...Array(10).keys()).map((creation, index) => (
           <ImageCardLoader key={index} />
         ))}
@@ -47,4 +62,8 @@ export const ImageCardLoader = () => {
       </div>
     </div>
   );
+};
+
+export const AvatarSkeleton = () => {
+  return <div className="w-7 h-7 rounded-full bg-gray-300 animate-pulse" />;
 };
