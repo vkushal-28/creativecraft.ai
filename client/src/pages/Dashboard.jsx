@@ -48,10 +48,6 @@ const Dashboard = () => {
 
   const [selectedItem, setSelectedItem] = useState(null);
 
-  const activeSubscription = user?.subscriptions?.find(
-    (sub) => sub.status === "active"
-  );
-  console.log(user?.subscriptions);
   const fetchDashboardData = useCallback(async () => {
     try {
       const token = await getToken();
@@ -163,7 +159,7 @@ const Dashboard = () => {
         >
           <div
             onClick={(e) => e.stopPropagation()} // clicks inside modal don't close it
-            className={`bg-white rounded-2xl p-6 overflow-y-auto max-h-[90vh]  w-full ${
+            className={`bg-white rounded-2xl p-3 md:p-6 overflow-y-auto max-h-[80vh] md:max-h-[90vh]  w-full ${
               selectedItem.type === "image"
                 ? "max-w-xl"
                 : "w-full md:max-w-3xl xl:max-w-5xl"
@@ -176,14 +172,14 @@ const Dashboard = () => {
             </button>
 
             {/* Type Badge */}
-            <span className="text-xs font-medium px-3 py-1 rounded-full bg-primary/10 text-primary">
+            <span className="font-medium px-3 py-1 rounded-full bg-primary/10 text-primary">
               {selectedItem.type}
             </span>
 
             {/* Prompt */}
             <div className="mt-4">
               <h3 className="text-lg font-semibold mb-2">Prompt</h3>
-              <p className="text-sm text-gray-600">{selectedItem.prompt}</p>
+              <p className=" text-gray-600">{selectedItem.prompt}</p>
             </div>
 
             {/* Output */}
@@ -197,7 +193,7 @@ const Dashboard = () => {
                     className="rounded-xl w-full"
                   />
                 ) : (
-                  <div className="bg-gray-100 p-4 text-sm whitespace-pre-wrap text-gray-800">
+                  <div className="bg-gray-100 p-3 md:p-4  whitespace-pre-wrap text-gray-800">
                     {selectedItem.content}
                   </div>
                 )}
