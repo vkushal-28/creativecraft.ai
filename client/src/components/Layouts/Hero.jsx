@@ -5,7 +5,7 @@ import { assets } from "../../assets/assets";
 const Hero = () => {
   const navigate = useNavigate();
   return (
-    <div className="px-4 sm:px-20 xl:px-32 relative inline-flex flex-col w-full justify-center bg-[url(/gradientBackground.png)] bg-no-repeat bg-cover min-h-screen">
+    <div className="px-4 sm:px-20 xl:px-32 relative inline-flex flex-col w-full justify-center bg-[url(/gradientBackground.webp)] bg-no-repeat bg-cover min-h-screen">
       <div className="text-center mb-6">
         <h1 className="text-3xl sm:text-5xl md:text-6xl 2xl:text-7xl font-semibold mx-auto leading-[1.2]">
           Create amazing content with <br />
@@ -27,8 +27,8 @@ const Hero = () => {
         </button>
       </div>
       <div className="flex items-center gap-4 mt-8 mx-auto text-gray-600">
-        <img src={assets.user_group} alt="" className="h-8" /> Trusted by 10k+
-        people
+        <img src={assets.user_group} alt="user group" className="h-8" /> Trusted
+        by 10k+ people
       </div>
     </div>
   );

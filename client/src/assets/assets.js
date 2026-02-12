@@ -1,5 +1,5 @@
-import logo from "./logo.png";
-import gradientBackground from "./gradientBackground.png";
+import logo from "./logo.webp";
+import gradientBackground from "./gradientBackground.webp";
 import user_group from "./user_group.png";
 import star_icon from "./star_icon.svg";
 import star_dull_icon from "./star_dull_icon.svg";

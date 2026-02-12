@@ -28,7 +28,7 @@ const CreationItem = memo(({ item }) => {
             <div>
               <img
                 src={item.content}
-                alt="image"
+                alt="content image"
                 className="mt-3 w-full rounded-lg max-w-sm"
               />
             </div>

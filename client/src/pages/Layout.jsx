@@ -48,7 +48,7 @@ const Navbar = React.memo(({ sidebar, toggleSidebar }) => {
 const Background = () => (
   <div
     className="absolute inset-0 bg-no-repeat bg-cover bg-center opacity-80"
-    style={{ backgroundImage: "url(/bgbg.jpg)" }} // need to convert to compressed .webp
+    style={{ backgroundImage: "url(/bgbg.webp)" }} // need to convert to compressed .webp
     aria-hidden="true"></div>
 );
 

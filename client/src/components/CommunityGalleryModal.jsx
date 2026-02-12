@@ -55,7 +55,7 @@ const CommunityGalleryModal = memo(
                     }`}>
                     <img
                       src={c.content}
-                      alt=""
+                      alt="content image"
                       className="w-20 h-20 object-cover"
                     />
                   </button>

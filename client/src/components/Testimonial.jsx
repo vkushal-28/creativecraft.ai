@@ -57,6 +57,7 @@ const Testimonial = () => {
                         ? assets.star_icon
                         : assets.star_dull_icon
                     }
+                    alt="testimonial image"
                   />
                 ))}
             </div>
@@ -68,7 +69,7 @@ const Testimonial = () => {
               <img
                 src={testimonial.image}
                 className="w-12 object-contain rounded-full"
-                alt=""
+                alt="testimonial image"
               />
               <div className="text-sm text-gray-600">
                 <h3 className="font-medium">{testimonial.name}</h3>
