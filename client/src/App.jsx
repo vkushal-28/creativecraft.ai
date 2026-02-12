@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import Layout from "./pages/Layout";
 import WriteArticle from "./pages/WriteArticle";
@@ -11,8 +11,14 @@ import RemoveBackground from "./pages/RemoveBackground";
 import ReviewResume from "./pages/ReviewResume";
 import Community from "./pages/Community";
 import { Toaster } from "react-hot-toast";
+import { pageview } from "./components/analytics";
 
 const App = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    pageview(location.pathname + location.search);
+  }, [location]);
   return (
     <main>
       <Toaster />
