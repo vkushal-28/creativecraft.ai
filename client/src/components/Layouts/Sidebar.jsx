@@ -103,7 +103,7 @@ const Sidebar = React.memo(({ sidebar, setSidebar }) => {
 
       {/* 🔥 Sidebar */}
       <div
-        className={`fixed sm:static max-sm:top-0 top-14  bottom-0 left-0 w-60 bg-white shadow-lg flex flex-col justify-between items-center z-30
+        className={`fixed sm:static max-sm:top-0 top-14  bottom-0 left-0 w-60 bg-white shadow-lg flex flex-col justify-between items-center lg:z-0
         transform transition-all duration-300 ease-in-out
         ${sidebar ? "translate-x-0" : "-translate-x-full sm:translate-x-0"}`}>
         <div className="my-7 w-full">
