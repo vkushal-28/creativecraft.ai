@@ -1,6 +1,7 @@
 // analytics.js
 export const pageview = (url) => {
-  window.gtag("config", process.env.VITE_GA_ID, {
+  console.log(import.meta.env.VITE_GA_ID);
+  window.gtag("config", import.meta.env.VITE_GA_ID, {
     page_path: url,
   });
 };
