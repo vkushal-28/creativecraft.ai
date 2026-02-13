@@ -2,9 +2,9 @@ import React from "react";
 
 export const DashboardCardLoader = () => {
   return (
-    <div className="animate-pulse group bg-white border border-gray-200 rounded-2xl p-3.5 md:p-5 cursor-pointer">
+    <div className=" group bg-white border border-gray-200 rounded-2xl p-3.5 md:p-5 cursor-pointer">
       {/* Top Section */}
-      <div className="flex justify-between items-start mb-4">
+      <div className="flex justify-between items-start mb-4 animate-pulse">
         {/* Type Badge */}
         <div className="h-5.5 w-20 rounded-full bg-gray-300"></div>
 
@@ -13,13 +13,13 @@ export const DashboardCardLoader = () => {
       </div>
 
       {/* Prompt */}
-      <div className="space-y-2 mb-4">
+      <div className="space-y-2 mb-4 animate-pulse">
         <div className="h-4 rounded bg-gray-300"></div>
         <div className="h-4 rounded bg-gray-300 w-5/6"></div>
       </div>
 
       {/* Footer */}
-      <div className="mt-2 pt-1 border-t border-gray-100 text-xs text-gray-500">
+      <div className="mt-2 pt-1 border-t border-gray-100 text-xs text-gray-500 animate-pulse">
         <div className="h-3 w-32 rounded bg-gray-300 mt-1"></div>
       </div>
     </div>
